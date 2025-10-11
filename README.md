@@ -267,11 +267,9 @@ Computations by ...
 
 # api-wrapper-test
 #
-# Error Handling
-#
-# The NASA API endpoints return structured error responses for various failure scenarios. Errors are returned as JSON with a consistent format. Error handling is centralized in the Errors class.
-#
-# Error Response Format
+### Error Handling
+The NASA API endpoints return structured error responses for various failure scenarios. Errors are returned as JSON with a consistent format. Error handling is centralized in the Errors class.
+#### Error Response Format
 ```
 {
   "error": {
@@ -281,8 +279,8 @@ Computations by ...
   }
 }
 ```
-#
-# Error Types
+
+#### Error Types
 | Type              | Description |
 | :---------------- | :---------- |
 | timeout           | The request to the NASA API timed out. |
@@ -291,7 +289,7 @@ Computations by ...
 | http              | The NASA API returned a non-success HTTP status code. |
 | unknown           | An unexpected error occurred. |
 #
-# Example Error Responses
+#### Example Error Responses
 ```
 {
   "error": {

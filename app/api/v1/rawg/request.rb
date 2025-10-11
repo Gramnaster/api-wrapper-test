@@ -28,6 +28,7 @@ module V1
 
         request = request_class.new(uri)
         request["Content-Type"] = "application/json"
+        request["Authorization"] = "Bearer #{TOKEN}"
 
         response = http.request(request)
         JSON.parse(response.body)

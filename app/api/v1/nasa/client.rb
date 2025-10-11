@@ -10,5 +10,8 @@ module V1::Nasa
       query = allowed.to_query
       Request.call_horizons(http_method: "get", endpoint: "?" + query)
     end
+    def self.bad_route
+      Request.call_lookup(http_method: "get", endpoint: "")
+    end
   end
 end

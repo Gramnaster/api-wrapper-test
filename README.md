@@ -266,3 +266,74 @@ Computations by ...
 ```
 
 # api-wrapper-test
+#
+# Error Handling
+#
+# The NASA API endpoints return structured error responses for various failure scenarios. Errors are returned as JSON with a consistent format. Error handling is centralized in the Errors class.
+#
+# Error Response Format
+```
+{
+  "error": {
+    "type": "<error_type>",
+    "message": "<error_message>",
+    "code": <http_status_code>
+  }
+}
+```
+#
+# Error Types
+| Type              | Description |
+| :---------------- | :---------- |
+| timeout           | The request to the NASA API timed out. |
+| network           | A network error occurred (e.g., DNS failure, connection refused). |
+| parse             | The response from the NASA API could not be parsed as JSON. |
+| http              | The NASA API returned a non-success HTTP status code. |
+| unknown           | An unexpected error occurred. |
+#
+# Example Error Responses
+```
+{
+  "error": {
+    "type": "timeout",
+    "message": "The request to the NASA API timed out.",
+    "code": 408
+  }
+}
+```
+```
+{
+  "error": {
+    "type": "network",
+    "message": "A network error occurred while connecting to the NASA API.",
+    "code": 503
+  }
+}
+```
+```
+{
+  "error": {
+    "type": "parse",
+    "message": "The response from the NASA API could not be parsed as JSON.",
+    "code": 500
+  }
+}
+```
+```
+{
+  "error": {
+    "type": "http",
+    "message": "NASA API returned status 404: Not Found.",
+    "code": 404
+  }
+}
+```
+```
+{
+  "error": {
+    "type": "unknown",
+    "message": "An unexpected error occurred.",
+    "code": 500
+  }
+}
+```

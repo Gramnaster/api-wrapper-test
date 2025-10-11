@@ -29,8 +29,20 @@ module V1
         request = request_class.new(uri)
         request["Content-Type"] = "application/json"
 
-        response = http.request(request)
-        JSON.parse(response.body)
+        begin
+          response = http.request(request)
+          if response.code.to_i == 200
+            begin
+              JSON.parse(response.body)
+            rescue JSON::ParserError => e
+              V1::Nasa::Errors.from_exception(e)
+            end
+          else
+            V1::Nasa::Errors.from_http(response.code.to_i, response.message)
+          end
+        rescue Timeout::Error, SocketError, JSON::ParserError, StandardError => e
+          V1::Nasa::Errors.from_exception(e)
+        end
       end
       def self.call_horizons(http_method:, endpoint:)
         uri = URI("#{BASE_URL_HORIZONS}#{endpoint}")
@@ -51,11 +63,23 @@ module V1
         request = request_class.new(uri)
         request["Content-Type"] = "application/json"
 
-        response = http.request(request)
-        if uri.query&.include?("format=json")
-          JSON.parse(response.body)
-        else
-          response.body
+        begin
+          response = http.request(request)
+          if response.code.to_i == 200
+            if uri.query&.include?("format=json")
+              begin
+                JSON.parse(response.body)
+              rescue JSON::ParserError => e
+                V1::Nasa::Errors.from_exception(e)
+              end
+            else
+              response.body
+            end
+          else
+            V1::Nasa::Errors.from_http(response.code.to_i, response.message)
+          end
+        rescue Timeout::Error, SocketError, JSON::ParserError, StandardError => e
+          V1::Nasa::Errors.from_exception(e)
         end
       end
     end
